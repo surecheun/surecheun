@@ -3,7 +3,7 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Sure
+title: Hexo
 subtitle:
 description:
 keywords:
@@ -78,4 +78,4 @@ theme: landscape
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy: master
-  type: 
+  type:
