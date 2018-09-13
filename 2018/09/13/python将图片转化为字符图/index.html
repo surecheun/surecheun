@@ -7,7 +7,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Hello World | SURE</title>
+  <title>python将图片转化为字符图 | SURE</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -15,17 +15,20 @@
     <meta name="keywords" content="C++,python,java,Matlab,深度学习,机器学习,科学计算" />
   
 
-  <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+  <meta name="description" content="最近看到将图片转化为字符图的小实验，我觉得很有趣，所以决定自己实现一下。 步骤和原理如下：  读取图片的灰度值矩阵（0-255之间），灰度值矩阵主要反映的是图片的黑白程度，越黑越接近与0，越白越接近于255  确定用于作画的字符  根据灰度值确定代替字符，灰度值越小，其代替字符应该笔画越多（这样才能看起来颜色更深）  把全部选好的代替字符写入文本  选择字符的做法：用256（0-255又256个">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://yoursite.com/2018/08/25/hello-world/index.html">
+<meta property="og:title" content="python将图片转化为字符图">
+<meta property="og:url" content="http://yoursite.com/2018/09/13/python将图片转化为字符图/index.html">
 <meta property="og:site_name" content="SURE">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="最近看到将图片转化为字符图的小实验，我觉得很有趣，所以决定自己实现一下。 步骤和原理如下：  读取图片的灰度值矩阵（0-255之间），灰度值矩阵主要反映的是图片的黑白程度，越黑越接近与0，越白越接近于255  确定用于作画的字符  根据灰度值确定代替字符，灰度值越小，其代替字符应该笔画越多（这样才能看起来颜色更深）  把全部选好的代替字符写入文本  选择字符的做法：用256（0-255又256个">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-08-25T10:00:51.845Z">
+<meta property="og:image" content="https://img-blog.csdn.net/20180627110233954?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3l1bnl1bnl4/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="og:image" content="https://img-blog.csdn.net/20180627110400463?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3l1bnl1bnl4/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="og:updated_time" content="2018-09-13T14:14:36.127Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="twitter:title" content="python将图片转化为字符图">
+<meta name="twitter:description" content="最近看到将图片转化为字符图的小实验，我觉得很有趣，所以决定自己实现一下。 步骤和原理如下：  读取图片的灰度值矩阵（0-255之间），灰度值矩阵主要反映的是图片的黑白程度，越黑越接近与0，越白越接近于255  确定用于作画的字符  根据灰度值确定代替字符，灰度值越小，其代替字符应该笔画越多（这样才能看起来颜色更深）  把全部选好的代替字符写入文本  选择字符的做法：用256（0-255又256个">
+<meta name="twitter:image" content="https://img-blog.csdn.net/20180627110233954?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3l1bnl1bnl4/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
 
   
 
@@ -180,22 +183,17 @@
 </div>
 
 
-  <div id="toc" class="toc-article">
-    <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Start"><span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create-a-new-post"><span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run-server"><span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate-static-files"><span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy-to-remote-sites"><span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol>
-  </div>
-
 
 
 <div class="content content-post CENTER">
-   <article id="post-hello-world" class="article article-type-post" itemprop="blogPost">
+   <article id="post-python将图片转化为字符图" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">Hello World</h1>
+    <h1 class="post-title">python将图片转化为字符图</h1>
 
     <div class="article-meta">
       <span>
         <i class="icon-calendar"></i>
-        <span>2018.08.25</span>
+        <span>2018.09.13</span>
       </span>
 
       
@@ -211,7 +209,7 @@
       
         <span>
           <i class="icon-comment"></i>
-          <a href="https://surecheun.github.io//2018/08/25/hello-world/#disqus_thread"></a>
+          <a href="https://surecheun.github.io//2018/09/13/python将图片转化为字符图/#disqus_thread"></a>
         </span>
       
 
@@ -228,15 +226,24 @@
 
   <div class="article-content">
     
-      <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+      <p>﻿最近看到将图片转化为字符图的小实验，我觉得很有趣，所以决定自己实现一下。</p>
+<p>步骤和原理如下：</p>
+<ul>
+<li><p>读取图片的灰度值矩阵（0-255之间），灰度值矩阵主要反映的是图片的黑白程度，越黑越接近与0，越白越接近于255</p>
+</li>
+<li><p>确定用于作画的字符</p>
+</li>
+<li><p>根据灰度值确定代替字符，灰度值越小，其代替字符应该笔画越多（这样才能看起来颜色更深）</p>
+</li>
+<li><p>把全部选好的代替字符写入文本</p>
+</li>
+<li><p>选择字符的做法：用256（0-255又256个数）除以可以用于作画的字符的总长度，然后得到一个字符的灰度值区间。然后灰度值在某个区间是就转化为指定的字符。</p>
+</li>
+<li><p>我从google图片下载了一张小猪佩奇的图片，侵删，然后用它来画字符画，结果如下：<br><img src="https://img-blog.csdn.net/20180627110233954?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3l1bnl1bnl4/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="小猪佩奇"><img src="https://img-blog.csdn.net/20180627110400463?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3l1bnl1bnl4/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="小猪佩奇字符画"></p>
+</li>
+</ul>
+<p>还是蛮像的!<br>代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"># coding: utf-8</span><br><span class="line"></span><br><span class="line">import numpy as np</span><br><span class="line">from PIL import Image</span><br><span class="line"></span><br><span class="line">def img_to_char(image_path,height):</span><br><span class="line">    &apos;&apos;&apos;</span><br><span class="line">    将图片转化为字符</span><br><span class="line">    image_path是图片的路径</span><br><span class="line">    height是字符串图片的高度</span><br><span class="line">    &apos;&apos;&apos;</span><br><span class="line">    </span><br><span class="line">    #读取图片</span><br><span class="line">    img = Image.open(image_file)</span><br><span class="line">    img_width, img_height = img.size</span><br><span class="line">    # 假设字符的宽度是高度的3倍</span><br><span class="line">    width = 3* height * img_width // img_height</span><br><span class="line">    img = img.resize((width, height), Image.ANTIALIAS)</span><br><span class="line">    #读取图片的灰度值矩阵</span><br><span class="line">    data = np.array(img.convert(&apos;L&apos;))</span><br><span class="line">    #设定字符,字符数要是256的因子，这里取32</span><br><span class="line">    chars = &quot;#RMNHQODBWGPZ*@$C&amp;98?32I1&gt;!:-;. &quot;</span><br><span class="line">    N = len(chars)</span><br><span class="line">    #计算每个字符的区间,//取整</span><br><span class="line">    n = 256 // N</span><br><span class="line">    #result是字符结果</span><br><span class="line">    result = &apos;&apos;</span><br><span class="line">    for i in range(height):</span><br><span class="line">        for j in range(width):</span><br><span class="line">            result += chars[data[i][j] // n]</span><br><span class="line">        result += &apos;\n&apos;</span><br><span class="line">    with open(&apos;img.txt&apos;, mode=&apos;w&apos;) as f:</span><br><span class="line">        f.write(result)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    image_file = &apos;10.jpg&apos;</span><br><span class="line">    height = 100</span><br><span class="line">    img_to_char(image_file,height)</span><br></pre></td></tr></table></figure>
 
     
   </div>
@@ -274,10 +281,10 @@
 
    
   <div class="box-prev-next clearfix">
-    <a class="hide pull-left" href="/">
+    <a class="show pull-left" href="/2018/08/25/hello-world/">
         <i class="icon icon-angle-left"></i>
     </a>
-    <a class="show pull-right" href="/2018/09/13/python将图片转化为字符图/">
+    <a class="show pull-right" href="/2018/09/13/python爬取当当网的书籍信息并保存到csv文件/">
         <i class="icon icon-angle-right"></i>
     </a>
   </div>
@@ -406,7 +413,7 @@
   <script>
     var disqus_shortname = 'forsigner';
     
-    var disqus_url = 'http://yoursite.com/2018/08/25/hello-world/';
+    var disqus_url = 'http://yoursite.com/2018/09/13/python将图片转化为字符图/';
     
     (function(){
       var dsq = document.createElement('script');

@@ -15,12 +15,12 @@
     <meta name="keywords" content="C++,python,java,Matlab,深度学习,机器学习,科学计算" />
   
 
-  <meta name="description" content="———- 写在前面：本实验用到的图片均来自google图片，侵删！  实验介绍用python手写一个简单bp神经网络，实现人脸的性别识别。由于本人的机器配置比较差，所以无法使用网上很红的人脸大数据数据集（如lfw数据集等等），所以我从google图片下载了一些中国明星的照片来作为本次实验的数据集。  训练数据集：5位中国的男明星（每个明星10张），6位中国的女明星（每个明星10张）。  测试数据">
+  <meta name="description" content="写在前面：本实验用到的图片均来自google图片，侵删！  实验介绍用python手写一个简单bp神经网络，实现人脸的性别识别。由于本人的机器配置比较差，所以无法使用网上很红的人脸大数据数据集（如lfw数据集等等），所以我从google图片下载了一些中国明星的照片来作为本次实验的数据集。  训练数据集：5位中国的男明星（每个明星10张），6位中国的女明星（每个明星10张）。  测试数据集：6张女">
 <meta property="og:type" content="article">
 <meta property="og:title" content="python手写bp神经网络实现人脸性别识别1.0">
 <meta property="og:url" content="http://yoursite.com/2018/09/13/python手写bp神经网络实现人脸性别识别1.0/index.html">
 <meta property="og:site_name" content="SURE">
-<meta property="og:description" content="———- 写在前面：本实验用到的图片均来自google图片，侵删！  实验介绍用python手写一个简单bp神经网络，实现人脸的性别识别。由于本人的机器配置比较差，所以无法使用网上很红的人脸大数据数据集（如lfw数据集等等），所以我从google图片下载了一些中国明星的照片来作为本次实验的数据集。  训练数据集：5位中国的男明星（每个明星10张），6位中国的女明星（每个明星10张）。  测试数据">
+<meta property="og:description" content="写在前面：本实验用到的图片均来自google图片，侵删！  实验介绍用python手写一个简单bp神经网络，实现人脸的性别识别。由于本人的机器配置比较差，所以无法使用网上很红的人脸大数据数据集（如lfw数据集等等），所以我从google图片下载了一些中国明星的照片来作为本次实验的数据集。  训练数据集：5位中国的男明星（每个明星10张），6位中国的女明星（每个明星10张）。  测试数据集：6张女">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://img-blog.csdn.net/20180614160149565?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3l1bnl1bnl4/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
 <meta property="og:image" content="https://img-blog.csdn.net/20180614160212991?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3l1bnl1bnl4/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
@@ -31,10 +31,10 @@
 <meta property="og:image" content="https://img-blog.csdn.net/20180614160528225?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3l1bnl1bnl4/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
 <meta property="og:image" content="https://img-blog.csdn.net/20180614160800666?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3l1bnl1bnl4/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
 <meta property="og:image" content="https://img-blog.csdn.net/20180614160822304?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3l1bnl1bnl4/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
-<meta property="og:updated_time" content="2018-09-13T13:05:16.545Z">
+<meta property="og:updated_time" content="2018-09-13T14:16:45.127Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python手写bp神经网络实现人脸性别识别1.0">
-<meta name="twitter:description" content="———- 写在前面：本实验用到的图片均来自google图片，侵删！  实验介绍用python手写一个简单bp神经网络，实现人脸的性别识别。由于本人的机器配置比较差，所以无法使用网上很红的人脸大数据数据集（如lfw数据集等等），所以我从google图片下载了一些中国明星的照片来作为本次实验的数据集。  训练数据集：5位中国的男明星（每个明星10张），6位中国的女明星（每个明星10张）。  测试数据">
+<meta name="twitter:description" content="写在前面：本实验用到的图片均来自google图片，侵删！  实验介绍用python手写一个简单bp神经网络，实现人脸的性别识别。由于本人的机器配置比较差，所以无法使用网上很红的人脸大数据数据集（如lfw数据集等等），所以我从google图片下载了一些中国明星的照片来作为本次实验的数据集。  训练数据集：5位中国的男明星（每个明星10张），6位中国的女明星（每个明星10张）。  测试数据集：6张女">
 <meta name="twitter:image" content="https://img-blog.csdn.net/20180614160149565?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3l1bnl1bnl4/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
 
   
@@ -238,7 +238,7 @@
 
   <div class="article-content">
     
-      <p>﻿———-</p>
+      <hr>
 <p>写在前面：本实验用到的图片均来自google图片，侵删！</p>
 <hr>
 <h3 id="实验介绍"><a href="#实验介绍" class="headerlink" title="实验介绍"></a>实验介绍</h3><p>用python手写一个简单bp神经网络，实现人脸的性别识别。由于本人的机器配置比较差，所以无法使用网上很红的人脸大数据数据集（如lfw数据集等等），所以我从google图片下载了一些中国明星的照片来作为本次实验的数据集。</p>
@@ -312,10 +312,10 @@
 
    
   <div class="box-prev-next clearfix">
-    <a class="show pull-left" href="/2018/08/25/hello-world/">
+    <a class="show pull-left" href="/2018/09/13/opencv：vs2015添加了包含目录依然无法打开‘opencv2_core_core.hpp’ 解决方法/">
         <i class="icon icon-angle-left"></i>
     </a>
-    <a class="hide pull-right" href="/">
+    <a class="show pull-right" href="/2018/09/13/用python的turtle画分形树/">
         <i class="icon icon-angle-right"></i>
     </a>
   </div>

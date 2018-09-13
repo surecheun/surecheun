@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>matlab手写神经网络实现识别手写数字 | SURE</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="C++,python,java,Matlab,深度学习,机器学习,科学计算" />
+  
+
+  <meta name="description" content="实验说明一直想自己写一个神经网络来实现手写数字的识别，而不是套用别人的框架。恰巧前几天，有幸从同学那拿到5000张已经贴好标签的手写数字图片，于是我就尝试用matlab写一个网络。  实验数据：5000张手写数字图片（.jpg)，图片命名为1.jpg,2.jpg…5000.jpg。还有一个放着标签的excel文件。  数据处理：前4000张作为训练样本，后1000张作为测试样本。  图片处理：用m">
+<meta property="og:type" content="article">
+<meta property="og:title" content="matlab手写神经网络实现识别手写数字">
+<meta property="og:url" content="http://yoursite.com/2018/09/13/matlab手写神经网络实现识别手写数字/index.html">
+<meta property="og:site_name" content="SURE">
+<meta property="og:description" content="实验说明一直想自己写一个神经网络来实现手写数字的识别，而不是套用别人的框架。恰巧前几天，有幸从同学那拿到5000张已经贴好标签的手写数字图片，于是我就尝试用matlab写一个网络。  实验数据：5000张手写数字图片（.jpg)，图片命名为1.jpg,2.jpg…5000.jpg。还有一个放着标签的excel文件。  数据处理：前4000张作为训练样本，后1000张作为测试样本。  图片处理：用m">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://img-blog.csdn.net/20180527224744974?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3l1bnl1bnl4/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="og:image" content="https://img-blog.csdn.net/20180527224824667?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3l1bnl1bnl4/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="og:image" content="https://img-blog.csdn.net/20180527221353206?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3l1bnl1bnl4/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="og:image" content="https://img-blog.csdn.net/20180527224341951?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3l1bnl1bnl4/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="og:image" content="https://img-blog.csdn.net/20180527224533286?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3l1bnl1bnl4/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="og:updated_time" content="2018-09-13T14:16:18.640Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="matlab手写神经网络实现识别手写数字">
+<meta name="twitter:description" content="实验说明一直想自己写一个神经网络来实现手写数字的识别，而不是套用别人的框架。恰巧前几天，有幸从同学那拿到5000张已经贴好标签的手写数字图片，于是我就尝试用matlab写一个网络。  实验数据：5000张手写数字图片（.jpg)，图片命名为1.jpg,2.jpg…5000.jpg。还有一个放着标签的excel文件。  数据处理：前4000张作为训练样本，后1000张作为测试样本。  图片处理：用m">
+<meta name="twitter:image" content="https://img-blog.csdn.net/20180527224744974?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3l1bnl1bnl4/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cben" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?9a03c6a5993e9b16adebeb56a85fcc72";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">Home</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">Home</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#实验说明"><span class="toc-text">实验说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#神经网络设计"><span class="toc-text">神经网络设计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#网络实现"><span class="toc-text">网络实现</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#读取数据（getdata-m）"><span class="toc-text">读取数据（getdata.m）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#layerout函数"><span class="toc-text">layerout函数</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#训练一（mytrain-m）"><span class="toc-text">训练一（mytrain.m）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#训练二（mytrain-mini-m）"><span class="toc-text">训练二（mytrain_mini.m）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#测试（mytest-m）"><span class="toc-text">测试（mytest.m）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#main-m"><span class="toc-text">main.m</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实验结果"><span class="toc-text">实验结果</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-matlab手写神经网络实现识别手写数字" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">matlab手写神经网络实现识别手写数字</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2018.09.13</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Sure Cheun</span>
+        </span>
+      
+
+      
+
+
+      
+        <span>
+          <i class="icon-comment"></i>
+          <a href="https://surecheun.github.io//2018/09/13/matlab手写神经网络实现识别手写数字/#disqus_thread"></a>
+        </span>
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h3 id="实验说明"><a href="#实验说明" class="headerlink" title="实验说明"></a>实验说明</h3><p>一直想自己写一个神经网络来实现手写数字的识别，而不是套用别人的框架。恰巧前几天，有幸从同学那拿到5000张已经贴好标签的手写数字图片，于是我就尝试用matlab写一个网络。</p>
+<ul>
+<li><p>实验数据：5000张手写数字图片（.jpg)，图片命名为1.jpg,2.jpg…5000.jpg。还有一个放着标签的excel文件。</p>
+</li>
+<li><p>数据处理：前4000张作为训练样本，后1000张作为测试样本。</p>
+</li>
+<li><p>图片处理：用matlab的imread（）函数读取图片的灰度值矩阵（28，28），然后把每张图片的灰度值矩阵reshape为（28*28，1），然后把前4000张图片的灰度值矩阵合并为x_train，把后1000张图片的灰度值矩阵合并为x_test。</p>
+</li>
+</ul>
+<p><img src="https://img-blog.csdn.net/20180527224744974?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3l1bnl1bnl4/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="数字图片截图"><br><img src="https://img-blog.csdn.net/20180527224824667?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3l1bnl1bnl4/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="数字标签截图"></p>
+<h3 id="神经网络设计"><a href="#神经网络设计" class="headerlink" title="神经网络设计"></a>神经网络设计</h3><ul>
+<li><p>网络层设计：一层隐藏层，一层输出层</p>
+</li>
+<li><p>输入层：一张图片的灰度值矩阵reshape后的784个数，也就是x_train中的某一列</p>
+</li>
+<li><p>输出层：（10，1）的列向量，其中列向量中最大的数所在的索引就是预测的数字</p>
+</li>
+<li><p>激励函数：sigmoid函数（<a href="https://baike.baidu.com/item/Sigmoid%E5%87%BD%E6%95%B0" target="_blank" rel="noopener">公式</a>)</p>
+</li>
+<li><p>更新法则：后向传播算法（<a href="http://www.cnblogs.com/ronny/p/ann_02.html" target="_blank" rel="noopener">参考</a>）</p>
+</li>
+<li><p>一点说明：这里的训练我分别用了普通梯度下降法和mini_batch（batch size 为10）梯度下降法来实现</p>
+</li>
+<li><p>测试：用了两种方式表示正确率，一是统计预测正确的个数，而是利用matlab的plotconfusion函数</p>
+</li>
+</ul>
+<h3 id="网络实现"><a href="#网络实现" class="headerlink" title="网络实现"></a>网络实现</h3><p>全部实现包括5个函数(gedata.m /  layerout.m / mytrain.m / mytrain_mini.m / test.m)和一个main.m文件。</p>
+<h5 id="读取数据（getdata-m）"><a href="#读取数据（getdata-m）" class="headerlink" title="读取数据（getdata.m）"></a>读取数据（getdata.m）</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">function[x_train,y_train,x_test,y_test]=getdata()</span><br><span class="line">%把图片变成像素矩阵</span><br><span class="line">%path :图片路径 </span><br><span class="line">% x_train:训练样本像素矩阵(784,4000)</span><br><span class="line">%y_train:训练样本标签(10,4000)</span><br><span class="line">%x_test:测试样本像素矩阵(784,1000)</span><br><span class="line">%y_test:测试样本标签(10,1000)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">% photopath = &apos;./photo/&apos;;</span><br><span class="line">% snames=dir([photopath  &apos;*&apos; &apos;.jpg&apos;])%get all filenames in photopath</span><br><span class="line">% l = length(snames)</span><br><span class="line">% </span><br><span class="line">% %get x_ data</span><br><span class="line">% x_train = [];</span><br><span class="line">% x_test = [];</span><br><span class="line">% </span><br><span class="line">% for i=1:4000</span><br><span class="line">%     iname=[photopath snames(i).name] %the path of jpg</span><br><span class="line">%     x = imread(iname);  % the shape of x is (28,28)</span><br><span class="line">%     x = reshape(x,784,1);  %reshape x to (784,1)</span><br><span class="line">%     x_train = [x_train,x];</span><br><span class="line">% end</span><br><span class="line">% </span><br><span class="line">% for k=4001:5000</span><br><span class="line">%     kname=[photopath snames(k).name];  %the path of jpg</span><br><span class="line">%     x = imread(kname);   %the shape of x is (28,28)</span><br><span class="line">%     x = reshape(x,784,1);  %reshape x  to (784,1)</span><br><span class="line">%     x_test = [x_test,x];</span><br><span class="line">% end</span><br><span class="line"></span><br><span class="line">x_train=[];</span><br><span class="line"></span><br><span class="line">for i=1:4000</span><br><span class="line">      x=im2double(imread(strcat(num2str(i),&apos;.jpg&apos;)));</span><br><span class="line">      x=reshape(x,784,1);</span><br><span class="line">      x_train=[x_train,x];</span><br><span class="line">end</span><br><span class="line">x_test =[];</span><br><span class="line"></span><br><span class="line">for k=4001:5000</span><br><span class="line">      x=im2double(imread(strcat(num2str(k),&apos;.jpg&apos;)));</span><br><span class="line">      x=reshape(x,784,1);</span><br><span class="line">      x_test=[x_test,x];</span><br><span class="line">end</span><br><span class="line">data=xlsread(&apos;label.xlsx&apos;);</span><br><span class="line">y_train=data(:,1:4000);</span><br><span class="line">y_test = data(:,4001:5000);</span><br><span class="line"></span><br><span class="line">x_train;</span><br><span class="line">y_train;</span><br><span class="line">x_test;</span><br><span class="line">y_test;</span><br><span class="line"></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>这里踩了一个坑。我本来读取图片，是按目录来读取的，然后训练出来的效果一直不好。一度怀疑自己的更新函数写错了，改了很久，才发现按目录读取的图片顺序是错误的！按目录读取的图片并不是按1，2，3…这样读的，而是按下面的顺序读取的，这样就和label对不上了！！！<br><img src="https://img-blog.csdn.net/20180527221353206?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3l1bnl1bnl4/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt=""></p>
+<h5 id="layerout函数"><a href="#layerout函数" class="headerlink" title="layerout函数"></a>layerout函数</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">function [y] = layerout(w,b,x)</span><br><span class="line">%output function</span><br><span class="line">y = w*x + b;</span><br><span class="line">n = length(y);</span><br><span class="line">for i =1:n</span><br><span class="line">    y(i)=1.0/(1+exp(-y(i)));</span><br><span class="line">end</span><br><span class="line">y;</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h5 id="训练一（mytrain-m）"><a href="#训练一（mytrain-m）" class="headerlink" title="训练一（mytrain.m）"></a>训练一（mytrain.m）</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">function[w,b,w_h,b_h]=mytrain(x_train,y_train)</span><br><span class="line">%train function:设置一个隐藏层，784--&gt;隐藏层神经元个数--&gt;10</span><br><span class="line">%x_train:训练样本的像素数据</span><br><span class="line">%y_train：训练样本的标签</span><br><span class="line">%w：输出层权重</span><br><span class="line">%b：输出层偏置</span><br><span class="line">%w_h：隐藏层权重</span><br><span class="line">%b_h：隐藏层偏置</span><br><span class="line">%step：循环步数</span><br><span class="line"></span><br><span class="line">step=input(&apos;迭代步数：&apos;);</span><br><span class="line">a=input(&apos;学习因子：&apos;);</span><br><span class="line">in = 784; %输入神经元个数</span><br><span class="line">hid = input(&apos;隐藏层神经元个数：&apos;);%隐藏层神经元个数</span><br><span class="line">out = 10; %输出层神经元个数</span><br><span class="line">o =1;</span><br><span class="line"></span><br><span class="line">w = randn(out,hid);</span><br><span class="line">b = randn(out,1);</span><br><span class="line">w_h =randn(hid,in);</span><br><span class="line">b_h = randn(hid,1);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">for i=0:step</span><br><span class="line">    %打乱训练样本</span><br><span class="line">    r=randperm(4000);</span><br><span class="line">    x_train = x_train(:,r);</span><br><span class="line">    y_train = y_train(:,r);</span><br><span class="line">    </span><br><span class="line">    for j=1:4000</span><br><span class="line">        x = x_train(:,j);</span><br><span class="line">        y = y_train(:,j);</span><br><span class="line"></span><br><span class="line">        hid_put = layerout(w_h,b_h,x);</span><br><span class="line">        out_put = layerout(w,b,hid_put);</span><br><span class="line"></span><br><span class="line">        %更新公式的实现</span><br><span class="line">        o_update = (y-out_put).*out_put.*(1-out_put);</span><br><span class="line">        h_update = ((w&apos;)*o_update).*hid_put.*(1-hid_put);</span><br><span class="line"></span><br><span class="line">        outw_update = a*(o_update*(hid_put&apos;));</span><br><span class="line">        outb_update = a*o_update;</span><br><span class="line">        hidw_update = a*(h_update*(x&apos;));</span><br><span class="line">        hidb_update = a*h_update;</span><br><span class="line"></span><br><span class="line">        w = w + outw_update;</span><br><span class="line">        b = b+ outb_update;</span><br><span class="line">        w_h = w_h +hidw_update;</span><br><span class="line">        b_h =b_h +hidb_update;</span><br><span class="line">    end</span><br><span class="line">end  </span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h5 id="训练二（mytrain-mini-m）"><a href="#训练二（mytrain-mini-m）" class="headerlink" title="训练二（mytrain_mini.m）"></a>训练二（mytrain_mini.m）</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">function[w,b,w_h,b_h]=mytrain_mini(x_train,y_train)</span><br><span class="line">%train function:设置一个隐藏层，784--&gt;隐藏层神经元个数--&gt;10</span><br><span class="line">%x_train:训练样本的像素数据</span><br><span class="line">%y_train：训练样本的标签</span><br><span class="line">%w：输出层权重</span><br><span class="line">%b：输出层偏置</span><br><span class="line">%w_h：隐藏层权重</span><br><span class="line">%b_h：隐藏层偏置</span><br><span class="line">%step：循环步数</span><br><span class="line"></span><br><span class="line">step=ipout(&apos;迭代步数：&apos;);</span><br><span class="line">a=input(&apos;学习因子：&apos;);</span><br><span class="line">in = 784; %输入神经元个数</span><br><span class="line">hid = input(&apos;隐藏层神经元个数：&apos;);%隐藏层神经元个数</span><br><span class="line">out = 10; %输出层神经元个数</span><br><span class="line">o =1;</span><br><span class="line"></span><br><span class="line">w = randn(out,hid);</span><br><span class="line">b = randn(out,1);</span><br><span class="line">w_h =randn(hid,in);</span><br><span class="line">b_h = randn(hid,1);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">for i=0:step</span><br><span class="line">    %打乱训练样本</span><br><span class="line">    r=randperm(4000);</span><br><span class="line">    x_train = x_train(:,r);</span><br><span class="line">    y_train = y_train(:,r);</span><br><span class="line">    %mini_batch</span><br><span class="line">    for jj=0:399</span><br><span class="line">        %取batch为10  更新取10次的平均值</span><br><span class="line">        for j=jj*10+1:(jj+1)*10</span><br><span class="line">            x = x_train(:,j);</span><br><span class="line">            y = y_train(:,j);</span><br><span class="line"></span><br><span class="line">            hid_put = layerout(w_h,b_h,x);</span><br><span class="line">            out_put = layerout(w,b,hid_put);</span><br><span class="line">            </span><br><span class="line">            %更新公式的实现</span><br><span class="line">            o_update = (y-out_put).*out_put.*(1-out_put);</span><br><span class="line">            h_update = ((w&apos;)*o_update).*hid_put.*(1-hid_put);</span><br><span class="line">            </span><br><span class="line">            if j==1</span><br><span class="line">                outw_update = (double(a)/10)*(o_update*(hid_put&apos;));</span><br><span class="line">                outb_update = (double(a)/10)*o_update;</span><br><span class="line">                hidw_update = (double(a)/10)*(h_update*(x&apos;));</span><br><span class="line">                hidb_update = (double(a)/10)*h_update;</span><br><span class="line">            end</span><br><span class="line">            </span><br><span class="line">            if j~=1</span><br><span class="line">                outw_update = outw_update + (double(a)/10)*(o_update*(hid_put&apos;));</span><br><span class="line">                outb_update = outb_update -(double(a)/10)*o_update;</span><br><span class="line">                hidw_update = hidw_update + (double(a)/10)*(h_update*(x&apos;));</span><br><span class="line">                hidb_update = hidb_update -(double(a)/10)*h_update;</span><br><span class="line">            end</span><br><span class="line">        end</span><br><span class="line">        </span><br><span class="line">        w = w + outw_update;</span><br><span class="line">        b = b+ outb_update;</span><br><span class="line">        w_h = w_h +hidw_update;</span><br><span class="line">        b_h =b_h +hidb_update;</span><br><span class="line">    end  </span><br><span class="line">end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h5 id="测试（mytest-m）"><a href="#测试（mytest-m）" class="headerlink" title="测试（mytest.m）"></a>测试（mytest.m）</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">function[]= mytest(x_test,y_test,w,b,w_h,b_h)</span><br><span class="line">%x_test:测试样本的像素数据</span><br><span class="line">%y_test：测试样本的标签</span><br><span class="line">%w：输出层权重</span><br><span class="line">%b：输出层偏置</span><br><span class="line">%w_h：隐藏层权重</span><br><span class="line">%b_h：隐藏层偏置</span><br><span class="line"></span><br><span class="line">test = zeros(10,1000);</span><br><span class="line">for k=1:1000</span><br><span class="line">    x = x_test(:,k);</span><br><span class="line"></span><br><span class="line">    hid = layerout(w_h,b_h,x);</span><br><span class="line">    test(:,k)=layerout(w,b,hid);</span><br><span class="line">    </span><br><span class="line">    %正确率表示方式一：输出正确个数</span><br><span class="line">    [t,t_index]=max(test);</span><br><span class="line">    [y,y_index]=max(y_test);</span><br><span class="line">    sum = 0;</span><br><span class="line">    for p=1:length(t_index)</span><br><span class="line">        if t_index(p)==y_index(p)</span><br><span class="line">            sum =sum+1;</span><br><span class="line">        end</span><br><span class="line">    end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">fprintf(&apos;正确率: %d/1000\n&apos;,sum);</span><br><span class="line">    </span><br><span class="line">%正确率表示方式二：用plotconfusion函数</span><br><span class="line">plotconfusion(y_test,test);</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h5 id="main-m"><a href="#main-m" class="headerlink" title="main.m"></a>main.m</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[x_train,y_train,x_test,y_test]=getdata();</span><br><span class="line"></span><br><span class="line">%归一化</span><br><span class="line">x_train = mapminmax(x_train,0,1);</span><br><span class="line">x_test =mapminmax(x_test,0,1);</span><br><span class="line"></span><br><span class="line">[w1,b1,w_h1,b_h1]=mytrain(x_train,y_train);</span><br><span class="line">fprintf(&apos;mytrain正确率:\n&apos;);</span><br><span class="line">mytest(x_test,y_test,w1,b1,w_h1,b_h1);</span><br><span class="line"></span><br><span class="line">[w2,b2,w_h2,b_h2]=mytrain(x_train,y_train);</span><br><span class="line">fprintf(&apos;mytrain_mini正确率:\n&apos;);</span><br><span class="line">mytest(x_test,y_test,w2,b2,w_h2,b_h2);</span><br></pre></td></tr></table></figure>
+<h3 id="实验结果"><a href="#实验结果" class="headerlink" title="实验结果"></a>实验结果</h3><p>直接运行main.m，且两个训练方式都输入相同参数，得到结果如下：<br><img src="https://img-blog.csdn.net/20180527224341951?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3l1bnl1bnl4/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="结果"></p>
+<p>下面是mini_batch的plotconfusion结果，mytrain的也差不多。其中绿色的为正确率：<br><img src="https://img-blog.csdn.net/20180527224533286?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3l1bnl1bnl4/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="mytrain_mini"></p>
+<p>直观感觉min_batch方式的训练会快一丢丢。由于这里数据不多，所以两者的差别看不大出来！</p>
+
+    
+  </div>
+
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Sure</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/weixin.jpg" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/zhifubao.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2018/09/13/win10下安装TensorFlow（CPU only)/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2018/09/13/opencv：vs2015添加了包含目录依然无法打开‘opencv2_core_core.hpp’ 解决方法/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+
+   
+      <div class="git"></div>
+   
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+  <section class="disqus-comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+  </section>
+
+  <script>
+    var disqus_shortname = 'forsigner';
+    
+    var disqus_url = 'http://yoursite.com/2018/09/13/matlab手写神经网络实现识别手写数字/';
+    
+    (function(){
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
+  <script id="dsq-count-scr" src="//forsigner.disqus.com/count.js" async></script>
+
+
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>

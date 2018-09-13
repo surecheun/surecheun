@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>python爬取当当网的书籍信息并保存到csv文件 | SURE</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="C++,python,java,Matlab,深度学习,机器学习,科学计算" />
+  
+
+  <meta name="description" content="python爬取当当网的书籍信息并保存到csv文件 依赖的库： requests #用来获取页面内容 BeautifulSoup #opython3不能安装BeautifulSoup，但可以安装BeautifulSoup4（pip install bs4）  此实验爬取了当当网中关于深度学习的书籍，内容包括书籍名称、作者、出版社、当前价钱。为方便，此实验只爬取搜索出来的一个页面的书籍。具体步骤">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python爬取当当网的书籍信息并保存到csv文件">
+<meta property="og:url" content="http://yoursite.com/2018/09/13/python爬取当当网的书籍信息并保存到csv文件/index.html">
+<meta property="og:site_name" content="SURE">
+<meta property="og:description" content="python爬取当当网的书籍信息并保存到csv文件 依赖的库： requests #用来获取页面内容 BeautifulSoup #opython3不能安装BeautifulSoup，但可以安装BeautifulSoup4（pip install bs4）  此实验爬取了当当网中关于深度学习的书籍，内容包括书籍名称、作者、出版社、当前价钱。为方便，此实验只爬取搜索出来的一个页面的书籍。具体步骤">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://img-blog.csdn.net/20180508104902486?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3l1bnl1bnl4/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="og:updated_time" content="2018-09-13T14:14:58.497Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python爬取当当网的书籍信息并保存到csv文件">
+<meta name="twitter:description" content="python爬取当当网的书籍信息并保存到csv文件 依赖的库： requests #用来获取页面内容 BeautifulSoup #opython3不能安装BeautifulSoup，但可以安装BeautifulSoup4（pip install bs4）  此实验爬取了当当网中关于深度学习的书籍，内容包括书籍名称、作者、出版社、当前价钱。为方便，此实验只爬取搜索出来的一个页面的书籍。具体步骤">
+<meta name="twitter:image" content="https://img-blog.csdn.net/20180508104902486?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3l1bnl1bnl4/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cben" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?9a03c6a5993e9b16adebeb56a85fcc72";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">Home</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">Home</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#python爬取当当网的书籍信息并保存到csv文件"><span class="toc-text">python爬取当当网的书籍信息并保存到csv文件</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-python爬取当当网的书籍信息并保存到csv文件" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">python爬取当当网的书籍信息并保存到csv文件</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2018.09.13</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Sure Cheun</span>
+        </span>
+      
+
+      
+
+
+      
+        <span>
+          <i class="icon-comment"></i>
+          <a href="https://surecheun.github.io//2018/09/13/python爬取当当网的书籍信息并保存到csv文件/#disqus_thread"></a>
+        </span>
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p>﻿</p>
+<h3 id="python爬取当当网的书籍信息并保存到csv文件"><a href="#python爬取当当网的书籍信息并保存到csv文件" class="headerlink" title="python爬取当当网的书籍信息并保存到csv文件"></a>python爬取当当网的书籍信息并保存到csv文件</h3><ul>
+<li>依赖的库：</li>
+<li>requests #用来获取页面内容</li>
+<li>BeautifulSoup #opython3不能安装BeautifulSoup，但可以安装BeautifulSoup4（pip install bs4）</li>
+</ul>
+<p>此实验爬取了当当网中关于深度学习的书籍，内容包括书籍名称、作者、出版社、当前价钱。为方便，此实验只爬取搜索出来的一个页面的书籍。具体步骤如下：</p>
+<ul>
+<li>1 打开当当网，搜索“深度学习”，等待页面加载，获取当前网址<br>“<a href="http://search.dangdang.com/?key=%C9%EE%B6%C8%D1%A7%CF%B0&amp;act=input&quot;" target="_blank" rel="noopener">http://search.dangdang.com/?key=%C9%EE%B6%C8%D1%A7%CF%B0&amp;act=input&quot;</a></li>
+<li>2 点击鼠标右键，选择’检查’，获取当前页面的网页信息</li>
+<li>3 分析网页代码，截取我们要的内容。</li>
+<li>4 实验设计为：先从搜索’深度学习‘后得到的页面中抓取相关书籍的链接（url）；然后再遍历每个url，从该书籍的具体页面中寻找信息。（如果单单是爬取我上面的那些内容的话，好像不用进去每个书籍的链接 直接在搜索出来的页面获取 也可以。。。）</li>
+</ul>
+<p>下面是具体代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_all_books</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">        获取该页面所有符合要求的书本的链接</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    url = <span class="string">'http://search.dangdang.com/?key=%C9%EE%B6%C8%D1%A7%CF%B0&amp;act=input'</span></span><br><span class="line">    book_list = []</span><br><span class="line">    r = requests.get(url, timeout=<span class="number">30</span>)</span><br><span class="line">    soup = BeautifulSoup(r.text, <span class="string">'lxml'</span>)</span><br><span class="line"></span><br><span class="line">    book_ul = soup.find_all(<span class="string">'ul'</span>, &#123;<span class="string">'class'</span>: <span class="string">'bigimg'</span>,<span class="string">'id'</span>:<span class="string">'component_0__0__6612'</span>&#125;)</span><br><span class="line">    book_ps = book_ul[<span class="number">0</span>].find_all(<span class="string">'p'</span>,&#123;<span class="string">'class'</span>:<span class="string">'name'</span>,<span class="string">'name'</span>:<span class="string">'title'</span>&#125;)</span><br><span class="line">    <span class="keyword">for</span> book_p <span class="keyword">in</span> book_ps:</span><br><span class="line">        book_a = book_p.find(<span class="string">'a'</span>)</span><br><span class="line">        book_url = book_a.get(<span class="string">'href'</span>)</span><br><span class="line">        book_list.append(book_url)</span><br><span class="line">    <span class="keyword">return</span> book_list</span><br><span class="line"></span><br><span class="line"><span class="comment">#获取每本书的url，并打印出来</span></span><br><span class="line">books = get_all_books()</span><br><span class="line"><span class="keyword">for</span> book <span class="keyword">in</span> books:</span><br><span class="line">    print(book)</span><br></pre></td></tr></table></figure>
+<pre><code>http://product.dangdang.com/25111382.html
+http://product.dangdang.com/25089622.html
+http://product.dangdang.com/25231551.html
+http://product.dangdang.com/25234782.html
+http://product.dangdang.com/25224111.html
+http://product.dangdang.com/23993317.html
+http://product.dangdang.com/25073661.html
+http://product.dangdang.com/25245282.html
+http://product.dangdang.com/25208778.html
+http://product.dangdang.com/25212175.html
+http://product.dangdang.com/25175809.html
+http://product.dangdang.com/23983230.html
+http://product.dangdang.com/24104547.html
+http://product.dangdang.com/25124666.html
+http://product.dangdang.com/23996903.html
+http://product.dangdang.com/25082459.html
+http://product.dangdang.com/25207334.html
+http://product.dangdang.com/25104088.html
+http://product.dangdang.com/25163815.html
+http://product.dangdang.com/25118239.html
+http://product.dangdang.com/25105666.html
+http://product.dangdang.com/25208772.html
+http://product.dangdang.com/24049457.html
+http://product.dangdang.com/25234806.html
+http://product.dangdang.com/25230551.html
+http://product.dangdang.com/25166563.html
+http://product.dangdang.com/24165179.html
+http://product.dangdang.com/25250547.html
+http://product.dangdang.com/25262534.html
+http://product.dangdang.com/25098329.html
+http://product.dangdang.com/25225304.html
+http://product.dangdang.com/23925889.html
+http://product.dangdang.com/25261023.html
+http://product.dangdang.com/25269988.html
+http://product.dangdang.com/25138676.html
+http://product.dangdang.com/25125879.html
+http://product.dangdang.com/25250993.html
+http://product.dangdang.com/25243399.html
+http://product.dangdang.com/1057511057.html
+http://product.dangdang.com/25066760.html
+http://product.dangdang.com/24195829.html
+http://product.dangdang.com/25119333.html
+http://product.dangdang.com/24048571.html
+http://product.dangdang.com/25269074.html
+http://product.dangdang.com/25182369.html
+http://product.dangdang.com/25189701.html
+http://product.dangdang.com/25251315.html
+http://product.dangdang.com/25255372.html
+http://product.dangdang.com/1230199397.html
+http://product.dangdang.com/25073507.html
+http://product.dangdang.com/1336821476.html
+http://product.dangdang.com/25190949.html
+http://product.dangdang.com/1365765197.html
+http://product.dangdang.com/25215200.html
+http://product.dangdang.com/25242647.html
+http://product.dangdang.com/1211962291.html
+http://product.dangdang.com/25261676.html
+</code></pre><p>上面就是获取到的每本书的url，下面来处理每本书的url，获取每本书的信息：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_book_information</span><span class="params">(book_url)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">        获取书籍的信息</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    r = requests.get(book_url, timeout=<span class="number">60</span>)</span><br><span class="line">    soup = BeautifulSoup(r.text, <span class="string">'lxml'</span>)</span><br><span class="line">    </span><br><span class="line">    book_info = []</span><br><span class="line">    </span><br><span class="line">    <span class="comment">#获取书籍名称</span></span><br><span class="line">    div_name = soup.find(<span class="string">'div'</span>, &#123;<span class="string">'class'</span>: <span class="string">'name_info'</span>,<span class="string">'ddt-area'</span>:<span class="string">'001'</span>&#125;)</span><br><span class="line">    h1 = div_name.find(<span class="string">'h1'</span>,&#123;&#125;)</span><br><span class="line">    book_name = h1.get(<span class="string">'title'</span>)</span><br><span class="line">    book_info.append(book_name)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">#获取书籍作者</span></span><br><span class="line">    div_author = soup.find(<span class="string">'div'</span>,&#123;<span class="string">'class'</span>:<span class="string">'messbox_info'</span>&#125;)</span><br><span class="line">    span_author = div_author.find(<span class="string">'span'</span>,&#123;<span class="string">'class'</span>:<span class="string">'t1'</span>,<span class="string">'dd_name'</span>:<span class="string">'作者'</span>&#125;)</span><br><span class="line">    book_author = span_author.text.strip()[<span class="number">3</span>:]</span><br><span class="line">    book_info.append(book_author)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">#获取书籍出版社</span></span><br><span class="line">    div_press = soup.find(<span class="string">'div'</span>,&#123;<span class="string">'class'</span>:<span class="string">'messbox_info'</span>&#125;)</span><br><span class="line">    span_press = div_press.find(<span class="string">'span'</span>,&#123;<span class="string">'class'</span>:<span class="string">'t1'</span>,<span class="string">'dd_name'</span>:<span class="string">'出版社'</span>&#125;)</span><br><span class="line">    book_press = span_press.text.strip()[<span class="number">4</span>:]</span><br><span class="line">    book_info.append(book_press)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">#获取书籍价钱</span></span><br><span class="line">    div_price = soup.find(<span class="string">'div'</span>,&#123;<span class="string">'class'</span>:<span class="string">'price_d'</span>&#125;)</span><br><span class="line">    book_price = div_price.find(<span class="string">'p'</span>,&#123;<span class="string">'id'</span>:<span class="string">'dd-price'</span>&#125;).text.strip()</span><br><span class="line">    book_info.append(book_price)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> book_info</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"></span><br><span class="line"><span class="comment">#获取每本书的信息，并把信息保存到csv文件中</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    header = [<span class="string">'书籍名称'</span>,<span class="string">'作者'</span>,<span class="string">'出本社'</span>,<span class="string">'当前价钱'</span>]</span><br><span class="line">    <span class="keyword">with</span> open(<span class="string">'DeepLearning_book_info.csv'</span>,<span class="string">'w'</span>,encoding=<span class="string">'utf-8'</span>,newline=<span class="string">''</span>) <span class="keyword">as</span> f:</span><br><span class="line">        writer = csv.writer(f)</span><br><span class="line">        writer.writerow(header)</span><br><span class="line">        <span class="keyword">for</span> i,book <span class="keyword">in</span> enumerate(books):</span><br><span class="line">            <span class="keyword">if</span> i%<span class="number">10</span> == <span class="number">0</span>:</span><br><span class="line">                print(<span class="string">'获取了&#123;&#125;条信息，一共&#123;&#125;条信息'</span>.format(i,len(books)))</span><br><span class="line">            l = get_book_information(book)</span><br><span class="line">            writer.writerow(l)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+<pre><code>获取了0条信息，一共57条信息
+获取了10条信息，一共57条信息
+获取了20条信息，一共57条信息
+获取了30条信息，一共57条信息
+获取了40条信息，一共57条信息
+获取了50条信息，一共57条信息
+</code></pre><p>至此，爬虫结束，查看当前目录，就可以找到我们刚刚保存的DeepLearn_book_info.csv文件啦，打开查看，便得到下面的内容：<br><img src="https://img-blog.csdn.net/20180508104902486?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3l1bnl1bnl4/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="这里写图片描述"></p>
+<p>这样就把我们想要的书籍信息保存到csv文件啦。</p>
+
+    
+  </div>
+
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Sure</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/weixin.jpg" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/zhifubao.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2018/09/13/python将图片转化为字符图/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2018/09/13/python手写神经网络实现识别手写数字/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+
+   
+      <div class="git"></div>
+   
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+  <section class="disqus-comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+  </section>
+
+  <script>
+    var disqus_shortname = 'forsigner';
+    
+    var disqus_url = 'http://yoursite.com/2018/09/13/python爬取当当网的书籍信息并保存到csv文件/';
+    
+    (function(){
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
+  <script id="dsq-count-scr" src="//forsigner.disqus.com/count.js" async></script>
+
+
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>

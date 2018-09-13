@@ -7,7 +7,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Hello World | SURE</title>
+  <title>win10下安装TensorFlow（CPU only) | SURE</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -15,17 +15,17 @@
     <meta name="keywords" content="C++,python,java,Matlab,深度学习,机器学习,科学计算" />
   
 
-  <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+  <meta name="description" content="TensorFlow安装过程1 环境我的安装环境：win10 + 64位 +miniconda2+miniconda创建的python3.5.5环境+pip 由于目前TensorFlow在windows下不支持python2.7的环境，而我机器原来的python版本就是miniconda2的2.7版本，所以一直无法安装TensorFlow，每次用pip安装，它都提示无法找到相应的版本。 所以，为了">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://yoursite.com/2018/08/25/hello-world/index.html">
+<meta property="og:title" content="win10下安装TensorFlow（CPU only)">
+<meta property="og:url" content="http://yoursite.com/2018/09/13/win10下安装TensorFlow（CPU only)/index.html">
 <meta property="og:site_name" content="SURE">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="TensorFlow安装过程1 环境我的安装环境：win10 + 64位 +miniconda2+miniconda创建的python3.5.5环境+pip 由于目前TensorFlow在windows下不支持python2.7的环境，而我机器原来的python版本就是miniconda2的2.7版本，所以一直无法安装TensorFlow，每次用pip安装，它都提示无法找到相应的版本。 所以，为了">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-08-25T10:00:51.845Z">
+<meta property="og:updated_time" content="2018-09-13T14:16:10.193Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="twitter:title" content="win10下安装TensorFlow（CPU only)">
+<meta name="twitter:description" content="TensorFlow安装过程1 环境我的安装环境：win10 + 64位 +miniconda2+miniconda创建的python3.5.5环境+pip 由于目前TensorFlow在windows下不支持python2.7的环境，而我机器原来的python版本就是miniconda2的2.7版本，所以一直无法安装TensorFlow，每次用pip安装，它都提示无法找到相应的版本。 所以，为了">
 
   
 
@@ -182,20 +182,20 @@
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Start"><span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create-a-new-post"><span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run-server"><span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate-static-files"><span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy-to-remote-sites"><span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#TensorFlow安装过程"><span class="toc-text">TensorFlow安装过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-环境"><span class="toc-text">1 环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-安装TensorFlow"><span class="toc-text">2 安装TensorFlow</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-测试"><span class="toc-text">3 测试</span></a></li></ol></li></ol>
   </div>
 
 
 
 <div class="content content-post CENTER">
-   <article id="post-hello-world" class="article article-type-post" itemprop="blogPost">
+   <article id="post-win10下安装TensorFlow（CPU only)" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">Hello World</h1>
+    <h1 class="post-title">win10下安装TensorFlow（CPU only)</h1>
 
     <div class="article-meta">
       <span>
         <i class="icon-calendar"></i>
-        <span>2018.08.25</span>
+        <span>2018.09.13</span>
       </span>
 
       
@@ -211,7 +211,7 @@
       
         <span>
           <i class="icon-comment"></i>
-          <a href="https://surecheun.github.io//2018/08/25/hello-world/#disqus_thread"></a>
+          <a href="https://surecheun.github.io//2018/09/13/win10下安装TensorFlow（CPU only)/#disqus_thread"></a>
         </span>
       
 
@@ -228,15 +228,25 @@
 
   <div class="article-content">
     
-      <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+      <h2 id="TensorFlow安装过程"><a href="#TensorFlow安装过程" class="headerlink" title="TensorFlow安装过程"></a>TensorFlow安装过程</h2><h3 id="1-环境"><a href="#1-环境" class="headerlink" title="1 环境"></a>1 环境</h3><p>我的安装环境：win10 + 64位 +miniconda2+miniconda创建的python3.5.5环境+pip</p>
+<p>由于目前TensorFlow在windows下不支持python2.7的环境，而我机器原来的python版本就是miniconda2的2.7版本，所以一直无法安装TensorFlow，每次用pip安装，它都提示无法找到相应的版本。</p>
+<p>所以，为了安装TesnsorFlow，我又利用miniconda创建了一个python3.5的环境。具体步骤如下。</p>
+<p>1、打开安装miniconda时出现的程序“Anaconda Prompt”；<br>输入以下命令，先查看你已经安装了的环境；</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda env list</span><br></pre></td></tr></table></figure>
+<p>2、如果发现没有安装python3.5的话，就使用下面语句创建：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda create --name your_env_name python=3.5</span><br></pre></td></tr></table></figure>
+<p>  其中your_env_name可以是你喜欢的任何名字，我的话就用了python3，因为是   python3.5嘛！</p>
+<h3 id="2-安装TensorFlow"><a href="#2-安装TensorFlow" class="headerlink" title="2 安装TensorFlow"></a>2 安装TensorFlow</h3><p>按住win+R，打开cmd，进入命令窗口，先激活python3.5，输入下面命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">activate your_env_name</span><br></pre></td></tr></table></figure>
+<p>如果你的命令行开头出现’(your_env_name)’，那么就是进入python3.5环境啦</p>
+<p>然后直接用pip安装就可以啦:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install tensorflow</span><br></pre></td></tr></table></figure>
+<p>这里的安装需要一段时间，因为下载速度比较慢！！！</p>
+<h3 id="3-测试"><a href="#3-测试" class="headerlink" title="3 测试"></a>3 测试</h3><p>等到成功安装后，在命令行输入python，进入python：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python</span><br></pre></td></tr></table></figure>
+<p>然后依次输入下面语句：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import tensorflow</span><br><span class="line">a = tensorflow.constant(10)</span><br><span class="line">b = tensorflow.constant(22)</span><br><span class="line">sess = tensorflow.Session()</span><br><span class="line">sess.run(a+b)</span><br></pre></td></tr></table></figure>
+<p>如果输出32，那就成功啦！</p>
 
     
   </div>
@@ -274,10 +284,10 @@
 
    
   <div class="box-prev-next clearfix">
-    <a class="hide pull-left" href="/">
+    <a class="show pull-left" href="/2018/09/13/python手写神经网络实现识别手写数字/">
         <i class="icon icon-angle-left"></i>
     </a>
-    <a class="show pull-right" href="/2018/09/13/python将图片转化为字符图/">
+    <a class="show pull-right" href="/2018/09/13/matlab手写神经网络实现识别手写数字/">
         <i class="icon icon-angle-right"></i>
     </a>
   </div>
@@ -406,7 +416,7 @@
   <script>
     var disqus_shortname = 'forsigner';
     
-    var disqus_url = 'http://yoursite.com/2018/08/25/hello-world/';
+    var disqus_url = 'http://yoursite.com/2018/09/13/win10下安装TensorFlow（CPU only)/';
     
     (function(){
       var dsq = document.createElement('script');

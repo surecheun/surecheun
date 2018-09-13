@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>python手写神经网络实现识别手写数字 | SURE</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="C++,python,java,Matlab,深度学习,机器学习,科学计算" />
+  
+
+  <meta name="description" content="写在开头：这个实验和matlab手写神经网络实现识别手写数字一样。  实验说明一直想自己写一个神经网络来实现手写数字的识别，而不是套用别人的框架。恰巧前几天，有幸从同学那拿到5000张已经贴好标签的手写数字图片，于是我就尝试用matlab写一个网络。  实验数据：5000张手写数字图片（.jpg)，图片命名为1.jpg,2.jpg…5000.jpg。还有一个放着标签的excel文件。  数据处理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python手写神经网络实现识别手写数字">
+<meta property="og:url" content="http://yoursite.com/2018/09/13/python手写神经网络实现识别手写数字/index.html">
+<meta property="og:site_name" content="SURE">
+<meta property="og:description" content="写在开头：这个实验和matlab手写神经网络实现识别手写数字一样。  实验说明一直想自己写一个神经网络来实现手写数字的识别，而不是套用别人的框架。恰巧前几天，有幸从同学那拿到5000张已经贴好标签的手写数字图片，于是我就尝试用matlab写一个网络。  实验数据：5000张手写数字图片（.jpg)，图片命名为1.jpg,2.jpg…5000.jpg。还有一个放着标签的excel文件。  数据处理">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://img-blog.csdn.net/20180527224744974?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3l1bnl1bnl4/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="og:image" content="https://img-blog.csdn.net/20180527224824667?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3l1bnl1bnl4/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="og:updated_time" content="2018-09-13T14:15:33.867Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python手写神经网络实现识别手写数字">
+<meta name="twitter:description" content="写在开头：这个实验和matlab手写神经网络实现识别手写数字一样。  实验说明一直想自己写一个神经网络来实现手写数字的识别，而不是套用别人的框架。恰巧前几天，有幸从同学那拿到5000张已经贴好标签的手写数字图片，于是我就尝试用matlab写一个网络。  实验数据：5000张手写数字图片（.jpg)，图片命名为1.jpg,2.jpg…5000.jpg。还有一个放着标签的excel文件。  数据处理">
+<meta name="twitter:image" content="https://img-blog.csdn.net/20180527224744974?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3l1bnl1bnl4/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cben" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?9a03c6a5993e9b16adebeb56a85fcc72";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">Home</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">Home</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#实验说明"><span class="toc-text">实验说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#神经网络设计"><span class="toc-text">神经网络设计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#网络实现"><span class="toc-text">网络实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实验结果"><span class="toc-text">实验结果</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-python手写神经网络实现识别手写数字" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">python手写神经网络实现识别手写数字</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2018.09.13</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Sure Cheun</span>
+        </span>
+      
+
+      
+
+
+      
+        <span>
+          <i class="icon-comment"></i>
+          <a href="https://surecheun.github.io//2018/09/13/python手写神经网络实现识别手写数字/#disqus_thread"></a>
+        </span>
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <hr>
+<p>写在开头：这个实验和<a href="https://blog.csdn.net/yunyunyx/article/details/80473532" target="_blank" rel="noopener">matlab手写神经网络实现识别手写数字</a>一样。</p>
+<hr>
+<h3 id="实验说明"><a href="#实验说明" class="headerlink" title="实验说明"></a>实验说明</h3><p>一直想自己写一个神经网络来实现手写数字的识别，而不是套用别人的框架。恰巧前几天，有幸从同学那拿到5000张已经贴好标签的手写数字图片，于是我就尝试用matlab写一个网络。</p>
+<ul>
+<li><p>实验数据：5000张手写数字图片（.jpg)，图片命名为1.jpg,2.jpg…5000.jpg。还有一个放着标签的excel文件。</p>
+</li>
+<li><p>数据处理：前4000张作为训练样本，后1000张作为测试样本。</p>
+</li>
+<li><p>图片处理：用matlab的imread（）函数读取图片的灰度值矩阵（28，28），然后把每张图片的灰度值矩阵reshape为（28*28，1），然后把前4000张图片的灰度值矩阵合并为x_train，把后1000张图片的灰度值矩阵合并为x_test。</p>
+</li>
+</ul>
+<p><img src="https://img-blog.csdn.net/20180527224744974?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3l1bnl1bnl4/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="数字图片截图"><br><img src="https://img-blog.csdn.net/20180527224824667?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3l1bnl1bnl4/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="数字标签截图"></p>
+<h3 id="神经网络设计"><a href="#神经网络设计" class="headerlink" title="神经网络设计"></a>神经网络设计</h3><ul>
+<li><p>网络层设计：一层隐藏层，一层输出层</p>
+</li>
+<li><p>输入层：一张图片的灰度值矩阵reshape后的784个数，也就是x_train中的某一列</p>
+</li>
+<li><p>输出层：（10，1）的列向量，其中列向量中最大的数所在的索引+1就是预测的数字</p>
+</li>
+<li><p>激励函数：sigmoid函数（<a href="https://baike.baidu.com/item/Sigmoid%E5%87%BD%E6%95%B0" target="_blank" rel="noopener">公式</a>)</p>
+</li>
+<li><p>更新法则：后向传播算法（<a href="http://www.cnblogs.com/ronny/p/ann_02.html" target="_blank" rel="noopener">参考</a>）</p>
+</li>
+<li><p>测试：统计预测正确的个数</p>
+</li>
+</ul>
+<h3 id="网络实现"><a href="#网络实现" class="headerlink" title="网络实现"></a>网络实现</h3><ul>
+<li>函数说明：读图片的函数（read_photo() ）、读excel的函数（read_excel(path) ）、修正函数（layerout(w,b,x) ）、训练函数（mytrain(x_train,y_train) ）、测试函数（mytest(x_test,y_test,w,b,w_h,b_h) ）、主函数（main() ）</li>
+</ul>
+<p>具体代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br></pre></td><td class="code"><pre><span class="line"># -*- coding: utf-8 -*-</span><br><span class="line"></span><br><span class="line">from PIL import Image</span><br><span class="line"></span><br><span class="line">from pylab import *</span><br><span class="line"></span><br><span class="line">import numpy as np</span><br><span class="line"></span><br><span class="line">import xlrd</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#读取图片的灰度值矩阵</span><br><span class="line">def read_photo():</span><br><span class="line">	for i in range(5000):</span><br><span class="line">		j = i+1</span><br><span class="line">		j = str(j)</span><br><span class="line">		st = &apos;.jpg&apos;</span><br><span class="line">		j = j+st</span><br><span class="line">		im1 = array(Image.open(j))</span><br><span class="line">		#（28，28）--&gt;(28*28,1)</span><br><span class="line">		im1 = im1.reshape((784,1))</span><br><span class="line">		#把所有的图片灰度值放到一个矩阵中</span><br><span class="line">		#一列代表一张图片的信息</span><br><span class="line">		if i == 0:</span><br><span class="line">			im = im1</span><br><span class="line">		else:</span><br><span class="line">			im = np.hstack((im,im1))</span><br><span class="line">	return im</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#读取excel文件内容（path为文件路径）</span><br><span class="line">def read_excel(path):</span><br><span class="line">    # 获取所有sheet</span><br><span class="line">    workbook = xlrd.open_workbook(path)</span><br><span class="line">    sheet_names = workbook.sheet_names()</span><br><span class="line"></span><br><span class="line">    # 根据sheet索引或者名称获取sheet内容</span><br><span class="line">    for sheet_name in sheet_names:</span><br><span class="line">        isheet = workbook.sheet_by_name(sheet_name)</span><br><span class="line">        </span><br><span class="line">        #获取该sheet的列数</span><br><span class="line">        ncols = isheet.ncols</span><br><span class="line">        #获取每一列的内容</span><br><span class="line">        for i in range(ncols):</span><br><span class="line">            if i == 0:</span><br><span class="line">                xl1 = isheet.col_values(i)</span><br><span class="line">                xl1 = np.array(xl1)</span><br><span class="line">                xl1 = xl1.reshape((10,1))</span><br><span class="line">                xl = xl1</span><br><span class="line">            else:</span><br><span class="line">                xl1 = isheet.col_values(i)</span><br><span class="line">                xl1 = np.array(xl1)</span><br><span class="line">                xl1 = xl1.reshape((10,1))</span><br><span class="line">                xl = np.hstack((xl,xl1))</span><br><span class="line">    return xl</span><br><span class="line">    </span><br><span class="line">#layerout函数</span><br><span class="line">def layerout(w,b,x):</span><br><span class="line">    y = np.dot(w,x) + b</span><br><span class="line">    t = -1.0*y</span><br><span class="line">    # n = len(y)</span><br><span class="line">    # for i in range(n):</span><br><span class="line">        # y[i]=1.0/(1+exp(-y[i]))</span><br><span class="line">    y = 1.0/(1+exp(t))</span><br><span class="line">    return y</span><br><span class="line">    </span><br><span class="line"> </span><br><span class="line">#训练函数</span><br><span class="line">def mytrain(x_train,y_train):</span><br><span class="line">    &apos;&apos;&apos;</span><br><span class="line">    设置一个隐藏层，784--&gt;隐藏层神经元个数--&gt;10</span><br><span class="line">    &apos;&apos;&apos;</span><br><span class="line"></span><br><span class="line">    step=int(input(&apos;mytrain迭代步数：&apos;)) </span><br><span class="line">    a=double(input(&apos;学习因子：&apos;)) </span><br><span class="line">    inn = 784  #输入神经元个数</span><br><span class="line">    hid = int(input(&apos;隐藏层神经元个数：&apos;))#隐藏层神经元个数</span><br><span class="line">    out = 10  #输出层神经元个数</span><br><span class="line"></span><br><span class="line">    w = np.random.randn(out,hid)</span><br><span class="line">    w = np.mat(w)</span><br><span class="line">    b = np.mat(np.random.randn(out,1)) </span><br><span class="line">    w_h = np.random.randn(hid,inn)</span><br><span class="line">    w_h = np.mat(w_h)</span><br><span class="line">    b_h = np.mat(np.random.randn(hid,1)) </span><br><span class="line">    </span><br><span class="line">    for i in range(step):</span><br><span class="line">        #打乱训练样本</span><br><span class="line">        r=np.random.permutation(4000)</span><br><span class="line">        x_train = x_train[:,r]</span><br><span class="line">        y_train = y_train[:,r]</span><br><span class="line">        #mini_batch</span><br><span class="line">        for j in range(400):</span><br><span class="line">            #取batch为10  更新取10次的平均值</span><br><span class="line">            x = np.mat(x_train[:,j]) </span><br><span class="line">            x = x.reshape((784,1))</span><br><span class="line">            y = np.mat(y_train[:,j]) </span><br><span class="line">            y = y.reshape((10,1))</span><br><span class="line">            hid_put = layerout(w_h,b_h,x) </span><br><span class="line">            out_put = layerout(w,b,hid_put) </span><br><span class="line">            </span><br><span class="line">            #更新公式的实现</span><br><span class="line">            o_update = np.multiply(np.multiply((y-out_put),out_put),(1-out_put)) </span><br><span class="line">            h_update = np.multiply(np.multiply(np.dot((w.T),np.mat(o_update)),hid_put),(1-hid_put)) </span><br><span class="line">           </span><br><span class="line">            outw_update = a*np.dot(o_update,(hid_put.T)) </span><br><span class="line">            outb_update = a*o_update </span><br><span class="line">            hidw_update = a*np.dot(h_update,(x.T)) </span><br><span class="line">            hidb_update = a*h_update </span><br><span class="line">            </span><br><span class="line">            w = w + outw_update </span><br><span class="line">            b = b+ outb_update </span><br><span class="line">            w_h = w_h +hidw_update </span><br><span class="line">            b_h =b_h +hidb_update </span><br><span class="line">            </span><br><span class="line">    return w,b,w_h,b_h</span><br><span class="line">    </span><br><span class="line">#test函数</span><br><span class="line">def mytest(x_test,y_test,w,b,w_h,b_h):</span><br><span class="line">    &apos;&apos;&apos;</span><br><span class="line">    统计1000个测试样本中有多少个预测正确了</span><br><span class="line">    预测结果表示：10*1的列向量中最大的那个数的索引+1就是预测结果了</span><br><span class="line">    &apos;&apos;&apos;</span><br><span class="line">    sum = 0</span><br><span class="line">    for k in range(1000):</span><br><span class="line">        x = np.mat(x_test[:,k])</span><br><span class="line">        x = x.reshape((784,1))</span><br><span class="line">        </span><br><span class="line">        y = np.mat(y_test[:,k])</span><br><span class="line">        y = y.reshape((10,1))</span><br><span class="line">        </span><br><span class="line">        yn = np.where(y ==(np.max(y)))</span><br><span class="line">        # print(yn)</span><br><span class="line">        # print(y)</span><br><span class="line">        hid = layerout(w_h,b_h,x);</span><br><span class="line">        pre = layerout(w,b,hid);</span><br><span class="line">        #print(pre)</span><br><span class="line">        pre = np.mat(pre)</span><br><span class="line">        pre = pre.reshape((10,1))</span><br><span class="line">        pren = np.where(pre ==(np.max(pre)))</span><br><span class="line">        # print(pren)</span><br><span class="line">        # print(pre)</span><br><span class="line">        if yn == pren:</span><br><span class="line">            sum += 1</span><br><span class="line">        </span><br><span class="line">    print(&apos;1000个样本，正确的有:&apos;,sum)</span><br><span class="line"></span><br><span class="line">def main():</span><br><span class="line">    #获取图片信息</span><br><span class="line">    im = read_photo()</span><br><span class="line">    immin = im.min()</span><br><span class="line">    immax = im.max()</span><br><span class="line">    </span><br><span class="line">    im = (im-immin)/(immax-immin)</span><br><span class="line">    </span><br><span class="line">    #前4000张图片作为训练样本</span><br><span class="line">    x_train = im[:,0:4000]</span><br><span class="line">    #后1000张图片作为测试样本</span><br><span class="line">    x_test = im[:,4000:5000]</span><br><span class="line">    </span><br><span class="line">    #获取label信息</span><br><span class="line">    xl = read_excel(&apos;./label.xlsx&apos;)</span><br><span class="line"> </span><br><span class="line">    y_train = xl[:,0:4000]</span><br><span class="line">    y_test = xl[:,4000:5000]</span><br><span class="line"></span><br><span class="line">    print(&quot;---------------------------------------------------------------&quot;)</span><br><span class="line">    w,b,w_h,b_h = mytrain(x_train,y_train)</span><br><span class="line">    mytest(x_test,y_test,w,b,w_h,b_h)</span><br><span class="line">    print(&quot;---------------------------------------------------------------&quot;)</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+<h3 id="实验结果"><a href="#实验结果" class="headerlink" title="实验结果"></a>实验结果</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">---------------------------------------------------------------</span><br><span class="line">mytrain迭代步数：300</span><br><span class="line">学习因子：0.3</span><br><span class="line">隐藏层神经元个数：28</span><br><span class="line">1000个样本，正确的有: 933</span><br><span class="line">---------------------------------------------------------------</span><br></pre></td></tr></table></figure>
+<p>迭代300步，正确率就有93.3%啦，还不错的正确率~</p>
+
+    
+  </div>
+
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Sure</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/weixin.jpg" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/zhifubao.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2018/09/13/python爬取当当网的书籍信息并保存到csv文件/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2018/09/13/win10下安装TensorFlow（CPU only)/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+
+   
+      <div class="git"></div>
+   
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+  <section class="disqus-comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+  </section>
+
+  <script>
+    var disqus_shortname = 'forsigner';
+    
+    var disqus_url = 'http://yoursite.com/2018/09/13/python手写神经网络实现识别手写数字/';
+    
+    (function(){
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
+  <script id="dsq-count-scr" src="//forsigner.disqus.com/count.js" async></script>
+
+
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>
